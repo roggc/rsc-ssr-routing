@@ -1,5 +1,5 @@
 const theme = {
-  gap: 40,
+  gap: 20,
 };
 
 export default theme;

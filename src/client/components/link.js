@@ -1,7 +1,7 @@
 import { useSlice } from "../slices";
 import React from "react";
 
-export default function Link({ page, children }) {
+export default function Link({ page, children, ...props }) {
   const [, setPage] = useSlice("page");
   return (
     <a
@@ -11,6 +11,7 @@ export default function Link({ page, children }) {
         history.pushState(page, null, "");
         setPage(page);
       }}
+      {...props}
     >
       {children}
     </a>
