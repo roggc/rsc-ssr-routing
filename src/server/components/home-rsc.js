@@ -1,7 +1,7 @@
 import React from "react";
-import Home from "../../client/components/home.js";
+import RCC from "./rcc.js";
 
 export default async function HomeRSC() {
   // you probably want to fetch some data in here
-  return <Home __isClient__="../components/home.js" />;
+  return <RCC __isClient__="../components/home.js" />;
 }

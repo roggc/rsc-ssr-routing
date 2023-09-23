@@ -1,6 +1,8 @@
-# RSC
+# RSC + SSR
 
-This is a setup for development with RSC (React Server Components). With this setup you can build SPA's with React and hide secret keys to fetch an API in the server or fetch a database with Prisma in the server. It's a fullstack setup with React.
+This is a setup for development with RSC (React Server Components) with SSR (Server Side Rendering). There is another setup to develop with RSC but without SSR, can be found [here](https://github.com/roggc/rsc).
+
+With this setup you can build SPA's with React and hide secret keys to fetch an API in the server or fetch a database with Prisma in the server. It's a fullstack setup with React.
 
 ## How to install and run the project.
 
@@ -51,19 +53,16 @@ export default async function Router({ url, body: { props } }) {
   switch (url.pathname) {
     case "/":
       return (
-        <ThemeProvider
-          __isClient__="../components/theme-provider.js"
-          theme={theme}
-        >
-          <Provider __isClient__="../slices.js">
-            <Layout __isClient__="../components/layout.js" title={title} />
-          </Provider>
-        </ThemeProvider>
+        <RCC __isClient__="../components/theme-provider.js" theme={theme}>
+          <RCC __isClient__="../slices.js">
+            <RCC __isClient__="../components/layout.js" title={title} />
+          </RCC>
+        </RCC>
       );
     case "/home":
       return <HomeRSC {...props} />;
     default:
-      return <Ups __isClient__="../components/ups.js" />;
+      return <RCC __isClient__="../components/ups.js" />;
   }
 }
 ```
@@ -73,11 +72,11 @@ So you see, when it is not first load it returns an RSC (`HomeRSC`). This RSC wi
 ```javascript
 export default async function HomeRSC() {
   // you probably want to fetch some data in here
-  return <Home __isClient__="../components/home.js" />;
+  return <RCC __isClient__="../components/home.js" />;
 }
 ```
 
-It just returns the RCC `Home`. And this is the `Layout` RCC:
+It just returns `RCC` RSC with the `__isClient__` prop set to where the file for `Home` RCC can be found relative to the utility function `fillJSXwithClientComponents`. And this is the `Layout` RCC:
 
 ```javascript
 export default function Layout({ title }) {
@@ -104,8 +103,8 @@ export default function Layout({ title }) {
 }
 ```
 
-You see how the `Layout` RCC doesn't call directly to `Home` RCC, but it calls instead to `RSC` RCC, which will fetch JSX for `HomeRSC`, wich will return `Home` RCC with proper data from the server.
+You see how the `Layout` RCC doesn't call directly to `Home` RCC, but it calls instead to `RSC` RCC, which will fetch JSX for `HomeRSC`, wich will return JSX for `Home` RCC with proper data from the server.
 
 So this is the cycle:
 
-From an RCC call to `RSC` RCC passing to it the name of the RSC component we want to fetch (usually `some-component-name`). Then in the `Router` RSC the `SomeComponentNameRSC` is called which fetchs some data and returns `SomeComponentName` RCC with proper data, that gets rendered in the Client.
+From an RCC call to `RSC` RCC passing to it the name of the RSC component we want to fetch (usually `some-component-name`). Then in the `Router` RSC the `SomeComponentNameRSC` is called which fetchs some data and returns `RCC` RSC pointing to `SomeComponentName` RCC with proper data, that gets rendered in the Client.
