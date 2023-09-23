@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <>
-      <Title>RSC + SSR setup</Title>
+      <Title>RSC + SSR</Title>
       <Image src={img1} borderRadius="10px" maxWidth="600px" />
 
       <Div>

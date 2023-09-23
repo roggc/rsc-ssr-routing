@@ -15,8 +15,12 @@ export default function Layout({ title }) {
       </head>
       <Body>
         <Nav>
-          <Link page={{ name: "home" }}>home</Link>
-          <Link page={{ name: "foo" }}>foo</Link>
+          <Link page={{ name: "home" }} cssIsActive="color:orange;">
+            home
+          </Link>
+          <Link page={{ name: "foo" }} cssIsActive="color:orange;">
+            foo
+          </Link>
         </Nav>
         <Container>
           <RSC
