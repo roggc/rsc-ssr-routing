@@ -6,13 +6,24 @@ import json from "@rollup/plugin-json";
 import replace from "@rollup/plugin-replace";
 import { globby } from "globby";
 import alias from "@rollup/plugin-alias";
+import image from "@rollup/plugin-image";
+
+const distInputEntries = {
+  app: "src/server/app.js",
+  router: "src/server/components/router.js",
+};
 
 export default [
   {
-    input: {
-      app: "src/server/app.js",
-      router: "src/server/components/router.js",
-    },
+    input: (await globby("src/client/*.js"))
+      .concat(await globby("src/client/components/*.js"))
+      .reduce(
+        (acc, entryFile) => ({
+          ...acc,
+          [entryFile.replace(".js", "").replace("src/", "")]: entryFile,
+        }),
+        distInputEntries
+      ),
     output: {
       dir: "dist",
       format: "es",
@@ -29,6 +40,7 @@ export default [
           },
         ],
       }),
+      image(),
     ],
   },
   {
@@ -61,12 +73,24 @@ export default [
         ],
       }),
       peerDepsExternal(),
-      commonjs(),
       nodeResolve(),
+      commonjs(),
       json(),
       replace({
         "process.env.NODE_ENV": JSON.stringify("development"),
       }),
+      image(),
     ],
+    onwarn: function (warning, handler) {
+      // Skip certain warnings
+
+      // should intercept ... but doesn't in some rollup versions
+      if (warning.code === "THIS_IS_UNDEFINED") {
+        return;
+      }
+
+      // console.warn everything else
+      handler(warning);
+    },
   },
 ];
