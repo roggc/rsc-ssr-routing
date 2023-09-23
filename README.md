@@ -1,6 +1,6 @@
 # RSC
 
-This is a setup for development with RSC (React Server Components). With this setup you can build SPA's with React and hide secret keys to fetch an API in the server or fetch a database with Prisma in the server. It's a fullstack setup.
+This is a setup for development with RSC (React Server Components). With this setup you can build SPA's with React and hide secret keys to fetch an API in the server or fetch a database with Prisma in the server. It's a fullstack setup with React.
 
 ## How to install and run the project.
 
@@ -72,6 +72,7 @@ So you see, when it is not first load it returns an RSC (`HomeRSC`). This RSC wi
 
 ```javascript
 export default async function HomeRSC() {
+  // you probably want to fetch some data in here
   return <Home __isClient__="../components/home.js" />;
 }
 ```
