@@ -1,12 +1,11 @@
 import React from "react";
-import RSC from "./rsc.js";
 import L from "./link.js";
 import { useNavigation } from "../hooks/index.js";
 import styled from "styled-components";
-import Error from "./error.js";
+import Router from "./router.js";
 
 export default function Layout({ title }) {
-  const page = useNavigation();
+  useNavigation();
 
   return (
     <html>
@@ -23,14 +22,7 @@ export default function Layout({ title }) {
           </Link>
         </Nav>
         <Container>
-          <RSC
-            key={page.name}
-            componentName={page.name}
-            {...page.props}
-            errorJSX={<Error />}
-          >
-            <LoadingContainer>loading {page.name} page...</LoadingContainer>
-          </RSC>
+          <Router />
         </Container>
       </Body>
     </html>
@@ -56,14 +48,6 @@ const Container = styled.div`
   justify-content: space-around;
   align-items: center;
   flex: 1;
-`;
-
-const LoadingContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Link = styled(L)`

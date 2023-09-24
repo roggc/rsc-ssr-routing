@@ -4,15 +4,19 @@ import styled from "styled-components";
 
 export default function Link({ page, children, ...props }) {
   const [pageSelected, setPage] = useSlice("page");
+  const isSamePage = pageSelected.name === page.name;
+
   return (
     <A
       href=""
       onClick={(e) => {
         e.preventDefault();
-        history.pushState(page, null, "");
-        setPage(page);
+        if (!isSamePage) {
+          history.pushState(page, null, "");
+          setPage(page);
+        }
       }}
-      isActive={pageSelected.name === page.name}
+      isActive={isSamePage}
       {...props}
     >
       {children}

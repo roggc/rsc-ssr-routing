@@ -21,10 +21,7 @@ app.use(async (req, res, next) => {
       <Router url={url} body={req.body} />
     );
     const clientJSXString = JSON.stringify(clientJSX, stringifyJSX);
-    if (url.pathname !== "/") {
-      res.setHeader("Content-Type", "application/json");
-      res.end(clientJSXString);
-    } else {
+    if (url.pathname === "/") {
       const fixedJSX = await fillJSXwithClientComponents(clientJSX);
       const bootstrapScriptContent = `window.__INITIAL_CLIENT_JSX_STRING__ = ${clientJSXString};`;
       const { pipe } = renderToPipeableStream(fixedJSX, {
@@ -35,6 +32,9 @@ app.use(async (req, res, next) => {
           pipe(res);
         },
       });
+    } else {
+      res.setHeader("Content-Type", "application/json");
+      res.end(clientJSXString);
     }
   } catch (err) {
     next(err);
