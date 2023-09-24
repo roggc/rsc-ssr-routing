@@ -2,7 +2,7 @@ import { useSlice } from "../slices";
 import { useEffect } from "react";
 
 export const useNavigation = () => {
-  const [page, setPage] = useSlice("page");
+  const [, setPage] = useSlice("page");
 
   useEffect(() => {
     const handlePopstate = (e) => {
@@ -14,6 +14,4 @@ export const useNavigation = () => {
       removeEventListener("popstate", handlePopstate);
     };
   }, []);
-
-  return page;
 };

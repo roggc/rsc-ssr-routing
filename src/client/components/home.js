@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import img1 from "../assets/react.png";
 import { useSlice } from "../slices";
 import Image from "./image";
+import RSC from "./rsc";
 
 export default function Home() {
+  const [count, setCount] = useState(0);
   const [count1, setCount1] = useSlice("count1");
   const [count2, reduxDispatch, { increment }] = useSlice("count2");
 
@@ -12,7 +14,22 @@ export default function Home() {
     <>
       <Title>RSC + SSR</Title>
       <Image src={img1} borderRadius="10px" maxWidth="600px" />
-
+      <Div>
+        <button onClick={() => setCount((c) => c + 1)}>
+          get Greeting of the Day (from server)
+        </button>
+        {count > 0 && <RSC componentName="greeting" key={count} />}
+      </Div>
+      <Counters>
+        <div>
+          <button onClick={() => setCount1((c) => c + 1)}>+</button>
+          {count1}
+        </div>
+        <div>
+          <button onClick={() => reduxDispatch(increment())}>+</button>
+          {count2}
+        </div>
+      </Counters>
       <Div>
         This is a setup for development with RSC (React Server Components) and
         SSR (Server Side Rendering)
@@ -41,16 +58,6 @@ export default function Home() {
         hidden from the Client (browser) or fetch some database in the server
         with Prisma.
       </Div>
-      <Counters>
-        <div>
-          <button onClick={() => setCount1((c) => c + 1)}>+</button>
-          {count1}
-        </div>
-        <div>
-          <button onClick={() => reduxDispatch(increment())}>+</button>
-          {count2}
-        </div>
-      </Counters>
     </>
   );
 }
